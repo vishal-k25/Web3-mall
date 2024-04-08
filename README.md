@@ -1,4 +1,4 @@
-# Dappazon
+# Web3mall
 
 ## Technology Stack & Tools
 
