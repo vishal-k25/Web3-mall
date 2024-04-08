@@ -2,40 +2,46 @@
 pragma solidity ^0.8.9;
 
 contract Web3mall {
-    string public name;
-    address public owner;
+    // State variables
+    string public name; // Name of the contract
+    address public owner; // Address of the contract owner
 
     struct Item {
-        uint256 id;
-        string name;
-        string category;
-        string image;
-        uint256 cost;
-        uint256 rating;
-        uint256 stock;
+        uint256 id; // Unique identifier for the item
+        string name; // Name of the item
+        string category; // Category of the item
+        string image; // URL or IPFS hash of the item image
+        uint256 cost; // Cost of the item in ether
+        uint256 rating; // Rating of the item
+        uint256 stock; // Available stock of the item
     }
 
     struct Order {
-        uint256 time;
-        Item item;
+        uint256 time; // Timestamp of when the order was placed
+        Item item; // The ordered item
     }
 
-    mapping(uint => Item) public items;
-    mapping(address => uint256) public orderCount;
-    mapping(address => mapping(uint256 => Order)) public orders;
+    // Mappings
+    mapping(uint => Item) public items; // Mapping of item ID to Item struct
+    mapping(address => uint256) public orderCount; // Mapping of buyer address to the number of orders placed
+    mapping(address => mapping(uint256 => Order)) public orders; // Mapping of buyer address and order ID to Order struct
 
-    event Buy(address buyer, uint256 orderId, uint256 itemId);
-    event List(string name, uint256 cost, uint256 quantity);
+    // Events
+    event Buy(address buyer, uint256 orderId, uint256 itemId); // Event emitted when an item is bought
+    event List(string name, uint256 cost, uint256 quantity); // Event emitted when an item is listed for sale
 
+    // Modifier to restrict access to the contract owner
     modifier onlyOwner() {
         require(msg.sender == owner);
         _;
     }
 
+    // Constructor to set the contract owner
     constructor() {
         owner = msg.sender;
     }
 
+    // Function to list a new item for sale
     function list(
         uint256 _id,
         string memory _name,
